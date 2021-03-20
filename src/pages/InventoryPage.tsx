@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,19 +8,19 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import styled from 'styled-components';
+import { useStateContext } from '../contexts/state';
 
 const CustomIconButton = styled(IconButton)`
     margin-right: 16px;
 `
 
-const InventoryPage = () => {
-    const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+const CustomTypohraphy = styled(Typography)`
+    flex-grow: 1
+`
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+const InventoryPage = () => {
+    const { state, dispatch } = useStateContext();
+    const [openMenu, setOpenMenu] = useState<boolean>(false);
 
     return (
         <AppBar position="static">
@@ -28,9 +28,9 @@ const InventoryPage = () => {
                 <CustomIconButton edge="start" color="inherit" aria-label="menu">
                     <MenuIcon />
                 </CustomIconButton>
-                <Typography variant="h6">
+                <CustomTypohraphy variant="h6">
                     Inwentarz
-             </Typography>
+                </CustomTypohraphy>
                 {true && (
                     <div>
                         <IconButton
@@ -38,12 +38,12 @@ const InventoryPage = () => {
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             color="inherit"
+                            onClick={() => setOpenMenu(true)}
                         >
                             <AccountCircle />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
-                            anchorEl={anchorEl}
                             anchorOrigin={{
                                 vertical: 'top',
                                 horizontal: 'right',
@@ -53,11 +53,12 @@ const InventoryPage = () => {
                                 vertical: 'top',
                                 horizontal: 'right',
                             }}
-                            open={open}
-                            onClose={handleClose}
+                            open={openMenu}
+                            onClose={() => setOpenMenu(false)}
                         >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                            <MenuItem onClick={() => setOpenMenu(false)}>Profil</MenuItem>
+                            <MenuItem onClick={() => setOpenMenu(false)}>Konto</MenuItem>
+                            <MenuItem onClick={() => setOpenMenu(false)}>Wyloguj</MenuItem>
                         </Menu>
                     </div>
                 )}

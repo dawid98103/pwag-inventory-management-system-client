@@ -43,22 +43,26 @@ const LoginForm = () => {
     const { state, dispatch } = useStateContext();
     const { register, handleSubmit, watch, errors } = useForm<FormInputs>();
     const onSubmit = (data: FormInputs) => {
-        const dataToSend: ILoginRequestDto = {
-            username: data.username,
-            password: data.password
+        if (dispatch) {
+            dispatch({ type: ActionType.SIGN_IN, payload: { userId: 1, username: data.username, userRole: 22, token: "fdfd" } });
         }
 
-        InventoryAPI.post('/authorization/login', dataToSend)
-            .then(response => {
-                const retrievedUser: ILoginResponseDto = response.data;
-                localStorage.setItem('user', JSON.stringify(retrievedUser));
-                localStorage.setItem('token', JSON.stringify(retrievedUser.token));
-                if (dispatch) {
-                    dispatch({ type: ActionType.SIGN_IN, payload: retrievedUser })
+        /*         const dataToSend: ILoginRequestDto = {
+                    username: data.username,
+                    password: data.password
                 }
-            }).catch(error => {
-                console.log(error);
-            })
+        
+                InventoryAPI.post('/authorization/login', dataToSend)
+                    .then(response => {
+                        const retrievedUser: ILoginResponseDto = response.data;
+                        localStorage.setItem('user', JSON.stringify(retrievedUser));
+                        localStorage.setItem('token', JSON.stringify(retrievedUser.token));
+                        if (dispatch) {
+                            dispatch({ type: ActionType.SIGN_IN, payload: retrievedUser })
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    }) */
     }
 
     return (

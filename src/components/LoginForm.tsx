@@ -8,6 +8,10 @@ import Container from '@material-ui/core/Container';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useForm } from "react-hook-form";
 import styled from 'styled-components';
+import { useStateContext } from '../contexts/state';
+import { ActionType } from '../contexts/reducer';
+import { ILoginRequestDto, ILoginResponseDto } from '../api/dto';
+import InventoryAPI from '../api/api';
 
 const Paper = styled.div`
     margin-top: 64px;
@@ -36,8 +40,26 @@ type FormInputs = {
 }
 
 const LoginForm = () => {
+    const { state, dispatch } = useStateContext();
     const { register, handleSubmit, watch, errors } = useForm<FormInputs>();
-    const onSubmit = (data: FormInputs) => console.log(data);
+    const onSubmit = (data: FormInputs) => {
+        const dataToSend: ILoginRequestDto = {
+            username: data.username,
+            password: data.password
+        }
+
+        InventoryAPI.post('/authorization/login', dataToSend)
+            .then(response => {
+                const retrievedUser: ILoginResponseDto = response.data;
+                localStorage.setItem('user', JSON.stringify(retrievedUser));
+                localStorage.setItem('token', JSON.stringify(retrievedUser.token));
+                if (dispatch) {
+                    dispatch({ type: ActionType.SIGN_IN, payload: retrievedUser })
+                }
+            }).catch(error => {
+                console.log(error);
+            })
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -46,6 +68,7 @@ const LoginForm = () => {
                     <LockOutlinedIcon />
                 </CustomAvatar>
                 <Typography variant="h5">
+                    {state.currentUser !== null && <div>Zalogowano: {state.currentUser.username}</div>}
                     Zaloguj się
                 </Typography>
                 <Form onSubmit={handleSubmit(onSubmit)}>

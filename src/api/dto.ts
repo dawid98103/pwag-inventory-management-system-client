@@ -3,14 +3,16 @@ enum UserRoles {
     ADMIN = 2
 }
 
-export interface LoginRequestDto {
+export interface ILoginRequestDto {
     username: string,
     password: string
 }
 
-export interface LoginResponseDto {
+export interface ILoginResponseDto {
     userId: number,
     userRole: number,
-    username: UserRoles,
+    username: string,
     token: string
 }
+
+

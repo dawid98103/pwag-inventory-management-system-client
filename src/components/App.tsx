@@ -1,6 +1,9 @@
+import React from 'react';
 import LoginPage from '../pages/LoginPage';
+import InventoryPage from '../pages/InventoryPage';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { StateProvider } from '../contexts/state';
 
 const theme = createMuiTheme({
     palette: {
@@ -18,9 +21,13 @@ const theme = createMuiTheme({
 
 const App = () => {
     return (
-        <ThemeProvider theme={theme}>
-            <LoginPage />
-        </ThemeProvider>
+        <React.Fragment>
+            <StateProvider>
+                <ThemeProvider theme={theme}>
+                    <LoginPage />
+                </ThemeProvider>
+            </StateProvider>
+        </React.Fragment>
     )
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import LoginPage from '../pages/LoginPage';
+import Navbar from '../components/Navbar';
 import InventoryPage from '../pages/InventoryPage';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -24,7 +25,9 @@ const App = () => {
         <React.Fragment>
             <StateProvider>
                 <ThemeProvider theme={theme}>
-                    <LoginPage />
+                    <Navbar />
+                    <InventoryPage />
+                    {/* <LoginPage /> */}
                 </ThemeProvider>
             </StateProvider>
         </React.Fragment>

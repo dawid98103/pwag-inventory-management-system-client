@@ -1,70 +1,60 @@
-import { useState } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import InventoryTable from '../components/InventoryTable';
 import styled from 'styled-components';
-import { useStateContext } from '../contexts/state';
 
-const CustomIconButton = styled(IconButton)`
-    margin-right: 16px;
-`
+const TableGroupHeader = styled.div`
+    display: flex;
+    justify-content: center;
+    align-item: center;
+    padding: 36px 0px 36px 0px;
+    margin: 16px 0px 16px 0px;
+    background-color: #f5f5f5;
+`;
 
-const CustomTypohraphy = styled(Typography)`
-    flex-grow: 1
-`
+const rows = [
+    { id: 1, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+    { id: 2, name: 'Pomidor', model: 'Czerwony', price: 10, quantity: 2, source: 'Warzywniak', state: 'OK', info: 'Pomidor czerwony fajny' },
+    { id: 3, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+    { id: 4, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+    { id: 5, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' }
+];
 
-const InventoryPage = () => {
-    const { state, dispatch } = useStateContext();
-    const [openMenu, setOpenMenu] = useState<boolean>(false);
+const apiData = [
+    {
+        group: "Owoce",
+        apiData: [
+            { id: 1, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+            { id: 2, name: 'Pomidor', model: 'Czerwony', price: 10, quantity: 2, source: 'Warzywniak', state: 'OK', info: 'Pomidor czerwony fajny' },
+            { id: 3, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+            { id: 4, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+            { id: 5, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' }
+        ]
+    },
+    {
+        group: "Warzywa",
+        apiData: [
+            { id: 1, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+            { id: 2, name: 'Pomidor', model: 'Czerwony', price: 10, quantity: 2, source: 'Warzywniak', state: 'OK', info: 'Pomidor czerwony fajny' },
+            { id: 3, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+            { id: 4, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+            { id: 5, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' }
+        ]
+    },
+    {
+        group: "Inne",
+        apiData: [
+            { id: 1, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+            { id: 2, name: 'Pomidor', model: 'Czerwony', price: 10, quantity: 2, source: 'Warzywniak', state: 'OK', info: 'Pomidor czerwony fajny' },
+            { id: 3, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+            { id: 4, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' },
+            { id: 5, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Ogórki', info: 'Ogrórki zielone młode' }
+        ]
+    }
+];
 
-    return (
-        <AppBar position="static">
-            <Toolbar>
-                <CustomIconButton edge="start" color="inherit" aria-label="menu">
-                    <MenuIcon />
-                </CustomIconButton>
-                <CustomTypohraphy variant="h6">
-                    Inwentarz
-                </CustomTypohraphy>
-                {true && (
-                    <div>
-                        <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            color="inherit"
-                            onClick={() => setOpenMenu(true)}
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={openMenu}
-                            onClose={() => setOpenMenu(false)}
-                        >
-                            <MenuItem onClick={() => setOpenMenu(false)}>Profil</MenuItem>
-                            <MenuItem onClick={() => setOpenMenu(false)}>Konto</MenuItem>
-                            <MenuItem onClick={() => setOpenMenu(false)}>Wyloguj</MenuItem>
-                        </Menu>
-                    </div>
-                )}
-            </Toolbar>
-        </AppBar>
-    )
+const InventoryPage = (): JSX.Element => {
+    return <>{
+        apiData.map(data => <div><TableGroupHeader><h1>{data.group}</h1></TableGroupHeader><InventoryTable rows={data.apiData} /></div>)
+    }</>
 }
 
 export default InventoryPage;

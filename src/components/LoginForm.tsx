@@ -10,8 +10,10 @@ import { useForm } from "react-hook-form";
 import styled from 'styled-components';
 import { useStateContext } from '../contexts/state';
 import { ActionType } from '../contexts/reducer';
+import { Link } from 'react-router-dom';
 import { ILoginRequestDto, ILoginResponseDto } from '../api/dto';
 import InventoryAPI from '../api/api';
+import { useHistory } from 'react-router-dom';
 
 const Paper = styled.div`
     margin-top: 64px;
@@ -41,10 +43,12 @@ type FormInputs = {
 
 const LoginForm = () => {
     const { state, dispatch } = useStateContext();
+    const history = useHistory();
     const { register, handleSubmit, watch, errors } = useForm<FormInputs>();
     const onSubmit = (data: FormInputs) => {
         if (dispatch) {
             dispatch({ type: ActionType.SIGN_IN, payload: { userId: 1, username: data.username, userRole: 22, token: "fdfd" } });
+            history.push("/inventory");
         }
 
         /*         const dataToSend: ILoginRequestDto = {

@@ -5,6 +5,7 @@ import InventoryPage from '../pages/InventoryPage';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { StateProvider } from '../contexts/state';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 const theme = createMuiTheme({
     palette: {
@@ -26,8 +27,10 @@ const App = () => {
             <StateProvider>
                 <ThemeProvider theme={theme}>
                     <Navbar />
-                    <InventoryPage />
-                    {/* <LoginPage /> */}
+                    <BrowserRouter>
+                        <Route path="/" exact component={LoginPage} />
+                        <Route path="/inventory" exact component={InventoryPage} />
+                    </BrowserRouter>
                 </ThemeProvider>
             </StateProvider>
         </React.Fragment>

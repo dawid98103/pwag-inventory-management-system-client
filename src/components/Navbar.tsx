@@ -18,9 +18,25 @@ const CustomTypohraphy = styled(Typography)`
     flex-grow: 1
 `
 
+const UserIconSection = styled.div`
+    display: flex;
+    align-items: center
+`
+
 const Navbar = () => {
     const { state, dispatch } = useStateContext();
     const [openMenu, setOpenMenu] = useState<boolean>(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+        setOpenMenu(true);
+    };
+
+    const handleCloseMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(null);
+        setOpenMenu(false);
+    };
 
     return (
         <AppBar position="static">
@@ -32,18 +48,22 @@ const Navbar = () => {
                     Inwentarz
                 </CustomTypohraphy>
                 {state.isAuthenticated && (
-                    <div>
+                    <UserIconSection>
+                        <CustomTypohraphy variant="h6">
+                            {state.currentUser?.username}
+                        </CustomTypohraphy>
                         <IconButton
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             color="inherit"
-                            onClick={() => setOpenMenu(true)}
+                            onClick={handleOpenMenu}
                         >
                             <AccountCircle />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
+                            anchorEl={anchorEl}
                             anchorOrigin={{
                                 vertical: 'top',
                                 horizontal: 'right',
@@ -54,13 +74,13 @@ const Navbar = () => {
                                 horizontal: 'right',
                             }}
                             open={openMenu}
-                            onClose={() => setOpenMenu(false)}
+                            onClose={setOpenMenu}
                         >
-                            <MenuItem onClick={() => setOpenMenu(false)}>Profil</MenuItem>
-                            <MenuItem onClick={() => setOpenMenu(false)}>Konto</MenuItem>
-                            <MenuItem onClick={() => setOpenMenu(false)}>Wyloguj</MenuItem>
+                            <MenuItem onClick={handleCloseMenu}>Profil</MenuItem>
+                            <MenuItem onClick={handleCloseMenu}>Konto</MenuItem>
+                            <MenuItem onClick={handleCloseMenu}>Wyloguj</MenuItem>
                         </Menu>
-                    </div>
+                    </UserIconSection>
                 )}
             </Toolbar>
         </AppBar>

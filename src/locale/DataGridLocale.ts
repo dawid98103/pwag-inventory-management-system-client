@@ -1,87 +1,82 @@
 import { GridLocaleText } from "@material-ui/data-grid";
 
-const GRID_PL_LOCALE: GridLocaleText = {
+export const plPLGrid: Partial<GridLocaleText> = {
     // Root
     rootGridLabel: 'grid',
-    noRowsLabel: 'No rows',
-    errorOverlayDefaultLabel: 'An error occurred.',
+    noRowsLabel: 'Brak danych',
+    errorOverlayDefaultLabel: 'Wystąpił błąd.',
 
     // Density selector toolbar button text
-    toolbarDensity: 'Density',
-    toolbarDensityLabel: 'Density',
-    toolbarDensityCompact: 'Compact',
+    toolbarDensity: 'Wysokość rzędu',
+    toolbarDensityLabel: 'Wysokość rzędu',
+    toolbarDensityCompact: 'Kompakt',
     toolbarDensityStandard: 'Standard',
-    toolbarDensityComfortable: 'Comfortable',
+    toolbarDensityComfortable: 'Komfort',
 
     // Columns selector toolbar button text
-    toolbarColumns: 'Columns',
-    toolbarColumnsLabel: 'Select columns',
+    toolbarColumns: 'Kolumny',
+    toolbarColumnsLabel: 'Zaznacz kolumny',
 
     // Filters toolbar button text
     toolbarFilters: 'Filtry',
     toolbarFiltersLabel: 'Pokaż filtry',
     toolbarFiltersTooltipHide: 'Ukryj filtry',
     toolbarFiltersTooltipShow: 'Pokaż filtry',
-    toolbarFiltersTooltipActive: (count) =>
-        count !== 1 ? `${count} aktywne filtry` : `${count} aktywny filtr`,
+    toolbarFiltersTooltipActive: (count) => `Ilość aktywnych filtrów: ${count}`,
 
     // Export selector toolbar button text
-    toolbarExport: 'Export',
-    toolbarExportLabel: 'Export',
-    toolbarExportCSV: 'Download as CSV',
+    toolbarExport: 'Eksportuj',
+    toolbarExportLabel: 'Eksportuj',
+    toolbarExportCSV: 'Pobierz jako plik CSV',
 
     // Columns panel text
     columnsPanelTextFieldLabel: 'Znajdź kolumnę',
-    columnsPanelTextFieldPlaceholder: 'Nazwa kolumny',
-    columnsPanelDragIconLabel: 'Reorder column',
-    columnsPanelShowAllButton: 'Pokaż wszystkie',
-    columnsPanelHideAllButton: 'Ukryj wszystkie',
+    columnsPanelTextFieldPlaceholder: 'Tytuł kolumny',
+    columnsPanelDragIconLabel: 'Zmień kolejność kolumn',
+    columnsPanelShowAllButton: 'Pokaż wszystko',
+    columnsPanelHideAllButton: 'Ukryj wszystko',
 
     // Filter panel text
     filterPanelAddFilter: 'Dodaj filtr',
     filterPanelDeleteIconLabel: 'Usuń',
     filterPanelOperators: 'Operator',
-    filterPanelOperatorAnd: 'i',
-    filterPanelOperatorOr: 'lub',
+    filterPanelOperatorAnd: 'I',
+    filterPanelOperatorOr: 'Lub',
     filterPanelColumns: 'Kolumny',
-    filterPanelInputLabel: 'Wartości',
-    filterPanelInputPlaceholder: 'Filtruj wartości',
+    filterPanelInputLabel: 'Wartość',
+    filterPanelInputPlaceholder: 'Filtrowana wartość',
 
     // Filter operators text
-    filterOperatorContains: 'Zawiera',
-    filterOperatorEquals: 'Jest równy',
-    filterOperatorStartsWith: 'Zaczyna się od',
-    filterOperatorEndsWith: 'Kończy się na',
-    filterOperatorIs: 'is',
-    filterOperatorNot: 'is not',
-    filterOperatorAfter: 'is after',
-    filterOperatorOnOrAfter: 'is on or after',
-    filterOperatorBefore: 'is before',
-    filterOperatorOnOrBefore: 'is on or before',
+    filterOperatorContains: 'zawiera',
+    filterOperatorEquals: 'równa się',
+    filterOperatorStartsWith: 'zaczyna się od',
+    filterOperatorEndsWith: 'kończy się na',
+    filterOperatorIs: 'równa się',
+    filterOperatorNot: 'różne',
+    filterOperatorAfter: 'większe niż',
+    filterOperatorOnOrAfter: 'większe lub równe',
+    filterOperatorBefore: 'mniejsze niż',
+    filterOperatorOnOrBefore: 'mniejsze lub równe',
 
     // Column menu text
     columnMenuLabel: 'Menu',
-    columnMenuShowColumns: 'Pokaż kolumny',
-    columnMenuFilter: 'Filtruj',
+    columnMenuShowColumns: 'Pokaż wszystkie kolumny',
+    columnMenuFilter: 'Filtr',
     columnMenuHideColumn: 'Ukryj',
-    columnMenuUnsort: 'Wyłącz sortowanie',
+    columnMenuUnsort: 'Anuluj sortowanie',
     columnMenuSortAsc: 'Sortuj rosnąco',
     columnMenuSortDesc: 'Sortuj malejąco',
 
     // Column header text
-    columnHeaderFiltersTooltipActive: (count) =>
-        count !== 1 ? `${count} aktywne filtry` : `${count} aktywny filtr`,
+    columnHeaderFiltersTooltipActive: (count) => `Ilość aktywnych filtrów: ${count}`,
     columnHeaderFiltersLabel: 'Pokaż filtry',
     columnHeaderSortIconLabel: 'Sortuj',
 
     // Rows selected footer text
-    footerRowSelected: (count) =>
-        count !== 1
-            ? `${count.toLocaleString()} zaznaczonych wierszy`
-            : `${count.toLocaleString()} Zaznaczono wiersz`,
+    footerRowSelected: (count) => `Ilość wybranych wierszy: ${count.toLocaleString()}`,
 
     // Total rows footer text
-    footerTotalRows: 'Zaznaczono Wierszy:',
-}
+    footerTotalRows: 'Łączna liczba wierszy:',
+};
 
-export default GRID_PL_LOCALE;
+export default plPLGrid;

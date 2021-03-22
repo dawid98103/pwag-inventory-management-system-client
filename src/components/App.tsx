@@ -6,6 +6,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { StateProvider } from '../contexts/state';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { plPL } from '@material-ui/core/locale';
 
 const theme = createMuiTheme({
     palette: {
@@ -19,7 +20,7 @@ const theme = createMuiTheme({
     typography: {
         fontFamily: 'Raleway, Arial',
     },
-});
+}, plPL);
 
 const App = () => {
     return (

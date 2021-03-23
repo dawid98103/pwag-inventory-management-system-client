@@ -77,7 +77,6 @@ const Navbar = () => {
                             onClose={setOpenMenu}
                         >
                             <MenuItem onClick={handleCloseMenu}>Profil</MenuItem>
-                            <MenuItem onClick={handleCloseMenu}>Konto</MenuItem>
                             <MenuItem onClick={handleCloseMenu}>Wyloguj</MenuItem>
                         </Menu>
                     </UserIconSection>

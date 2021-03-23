@@ -8,6 +8,7 @@ const InventoryTableContainer = styled.div`
 
 const InventoryPageActionBar = styled.div`
     display: flex;
+    justify-content: space-between;
     padding: 20px 10px 20px 10px;
     margin-top: 30px;
     border: 1px solid rgba(224, 224, 224, 1);

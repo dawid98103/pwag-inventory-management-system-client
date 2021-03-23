@@ -18,7 +18,8 @@ const theme = createMuiTheme({
         },
     },
     typography: {
-        fontFamily: 'Raleway, Arial',
+        fontFamily: 'Arial',
+        fontSize: 14
     },
 }, plPL);
 

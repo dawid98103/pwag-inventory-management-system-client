@@ -45,7 +45,7 @@ const Navbar = () => {
                     <MenuIcon />
                 </CustomIconButton>
                 <CustomTypohraphy variant="h6">
-                    Inwentarz
+                    Movie inventory
                 </CustomTypohraphy>
                 {state.isAuthenticated && (
                     <UserIconSection>

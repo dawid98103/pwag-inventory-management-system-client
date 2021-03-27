@@ -13,10 +13,10 @@ import { Divider } from '@material-ui/core';
 import { IMovieResponseDto } from '../../api/dto';
 import FormControl from '@material-ui/core/FormControl';
 import { MovieGenresSelect } from '../../api/dto';
+import { StateSelect } from '../../api/dto';
 
-type InfoPositionModalProps = {
+type AddPositionModalProps = {
     closeModal: () => void,
-    selectedItemId: number,
     open: boolean
 }
 
@@ -45,7 +45,7 @@ const mockItemDetails: IMovieResponseDto = {
     imgUrl: "https://media.multikino.pl/thumbnails/50/rc/REEzODcy/eyJ0aHVtYm5haWwiOnsic2l6ZSI6WyIxMDAwMCIsIjEwMDAwIl0sIm1vZGUiOiJpbnNldCJ9fQ==/uploads/images/films_and_events/psykoty-poster_f59daab7c7.JPG"
 }
 
-type EditInputs = {
+type AddInputs = {
     name: string,
     director: string,
     price: number,
@@ -55,15 +55,26 @@ type EditInputs = {
     imgUrl: string
 }
 
-const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionModalProps) => {
-    const { register, handleSubmit, watch, errors } = useForm<EditInputs>();
+const AddPositionModal = ({ closeModal, open }: AddPositionModalProps) => {
+    const { register, handleSubmit, watch, errors } = useForm<AddInputs>();
     const [genre, setGenre] = useState<number>(0);
     const [state, setState] = useState<number>(0);
 
-    const onSubmit = (data: EditInputs) => {
-        console.log(selectedItemId);
+    const onSubmit = (data: AddInputs) => {
         console.log(data);
+        console.log(genre);
+        console.log(state);
     }
+
+    const handleGenreChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        console.log(event);
+        setGenre(event.target.value as number);
+    };
+
+    const handleStateChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        console.log(event);
+        setState(event.target.value as number)
+    };
 
     return (
         <Dialog
@@ -71,13 +82,14 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
             maxWidth={"lg"}
             onClose={() => closeModal()}
         >
-            <DialogTitle>{`Edycja pozycji: ${mockItemDetails.name}`}</DialogTitle>
+            <DialogTitle>{`Dodanie nowego filmu`}</DialogTitle>
             <DialogContent>
                 <Paper>
                     <Form>
                         <TextField
                             name="name"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             label="Nazwa"
@@ -88,6 +100,7 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                         <TextField
                             name="director"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             label="Reżyser"
@@ -98,6 +111,7 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                         <TextField
                             name="imageUrl"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             id="firstName"
@@ -106,15 +120,16 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                             inputRef={register}
                         />
                         <MarginDivider />
-                        <FormControl variant="outlined" fullWidth>
+                        <FormControl variant="outlined" size={"small"} fullWidth>
                             <Select
                                 name="genre"
                                 label="Gatunek"
-
+                                value={genre}
+                                onChange={handleGenreChange}
                             >
                                 {
                                     MovieGenresSelect.map(genre => {
-                                        <MenuItem value={genre.genreId}>{genre.name}</MenuItem>
+                                        return <MenuItem value={genre.genreId}>{genre.name}</MenuItem>
                                     })
                                 }
                             </Select>
@@ -123,6 +138,7 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                         <TextField
                             name="price"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             type="number"
@@ -133,6 +149,7 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                         <TextField
                             name="quantity"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             type="number"
@@ -141,20 +158,23 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                             inputRef={register}
                         />
                         <MarginDivider />
-                        <FormControl variant="outlined" fullWidth>
+                        <FormControl variant="outlined" size={"small"} fullWidth>
                             <Select
                                 label="Stan"
                                 name="state"
-
+                                value={state}
+                                onChange={handleStateChange}
                             >
-                                <MenuItem value={1}>Na stanie</MenuItem>
-                                <MenuItem value={2}>Wypożyczony</MenuItem>
+                                {StateSelect.map(state => {
+                                    return <MenuItem value={state.stateId}>{state.name}</MenuItem>
+                                })}
                             </Select>
                         </FormControl>
                         <MarginDivider />
                         <TextField
                             name="info"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             type="string"
@@ -170,11 +190,11 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                     Anuluj
                 </Button>
                 <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
-                    Edytuj
+                    Dodaj
                  </Button>
             </DialogActions>
         </Dialog>
     );
 }
 
-export default InfoPositionModal;
+export default AddPositionModal;

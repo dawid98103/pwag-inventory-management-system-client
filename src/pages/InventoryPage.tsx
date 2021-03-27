@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import InventoryTable from '../components/InventoryTable';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
+import AddPositionModal from '../components/modals/AddPositionModal';
 
 const InventoryTableContainer = styled.div`
     margin-top: 1.5vw;
@@ -16,20 +18,23 @@ const InventoryPageActionBar = styled.div`
 `
 
 const apiData = [
-    { id: 1, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'OK', info: 'Ogrórki zielone młode', group: 'Warzywa' },
-    { id: 2, name: 'Pomidor', model: 'Czerwony', price: 10, quantity: 2, source: 'Warzywniak', state: 'OK', info: 'Pomidor czerwony fajny', group: 'Warzywa' },
-    { id: 3, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Wypożyczony', info: 'Ogrórki zielone młode', group: 'Warzywa' },
-    { id: 4, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'Uszkodzony', info: 'Ogrórki zielone młode', group: 'Warzywa' },
-    { id: 5, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'OK', info: 'Ogrórki zielone młode', group: 'Owoce' },
-    { id: 6, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'OK', info: 'Ogrórki zielone młode', group: 'Owoce' },
-    { id: 7, name: 'Ogórki', model: 'Zielone', price: 20, quantity: 2, source: 'Źródło', state: 'OK', info: 'Ogrórki zielone młode', group: 'Warzywa' }
+    { id: 1, name: 'Zielona mila', director: 'Frank Darabont', price: 20, quantity: 2, state: 'OK', info: 'Ogrórki zielone młode', genre: 'Dramat' },
+    { id: 2, name: 'Skazani na Shawshank', director: 'Frank Darabont', price: 10, quantity: 2, state: 'OK', info: 'Pomidor czerwony fajny', genre: 'Dramat' },
+    { id: 3, name: 'Matrix', director: 'Lilly Wachowski', price: 20, quantity: 2, state: 'Wypożyczony', info: 'Ogrórki zielone młode', genre: 'Akcja' }
 ];
 
 const InventoryPage = (): JSX.Element => {
+    const [openAddModal, setOpenAddModal] = useState<boolean>(false);
+
+    function handleAddPositionModal() {
+        setOpenAddModal(true);
+    }
+
     return (
         <>
+            <AddPositionModal open={openAddModal} closeModal={() => setOpenAddModal(false)} />
             <InventoryPageActionBar>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" onClick={() => handleAddPositionModal()}>
                     + Dodaj pozycję
             </Button>
             </InventoryPageActionBar>

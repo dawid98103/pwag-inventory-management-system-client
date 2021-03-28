@@ -10,15 +10,9 @@ import { useForm } from 'react-hook-form';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Divider } from '@material-ui/core';
-import { IMovieResponseDto } from '../../api/dto';
 import FormControl from '@material-ui/core/FormControl';
-import { MovieGenresSelect } from '../../api/dto';
-
-type InfoPositionModalProps = {
-    closeModal: () => void,
-    selectedItemId: number,
-    open: boolean
-}
+import InventoryAPI from '../../api/api';
+import { IMovieResponseDto, IMovieSaveDto, MovieGenre, State } from '../../api/dto';
 
 const Paper = styled.div`
     display: flex;
@@ -27,22 +21,47 @@ const Paper = styled.div`
 `
 
 const Form = styled.form`
-    width: 700px;
+    min-width: 100%;
 `
 
 const MarginDivider = styled(Divider)`
-    margin: 8px 0px 8px 0px;
+    margin: 16px 0px 16px 0px;
 `
 
-const mockItemDetails: IMovieResponseDto = {
-    name: "Zielona mila",
-    director: "Frank Darabont",
-    price: 2.50,
-    quantity: 5,
-    state: "OK",
-    info: "bla bla bla",
-    genre: "Akcja",
-    imgUrl: "https://media.multikino.pl/thumbnails/50/rc/REEzODcy/eyJ0aHVtYm5haWwiOnsic2l6ZSI6WyIxMDAwMCIsIjEwMDAwIl0sIm1vZGUiOiJpbnNldCJ9fQ==/uploads/images/films_and_events/psykoty-poster_f59daab7c7.JPG"
+const MovieGenresSelect: MovieGenre[] = [
+    {
+        genreId: 1,
+        name: "Akcja"
+    },
+    {
+        genreId: 2,
+        name: "Komedia"
+    },
+    {
+        genreId: 3,
+        name: "Dramat"
+    },
+    {
+        genreId: 4,
+        name: "Thriler"
+    }
+]
+
+const StateSelect: State[] = [
+    {
+        stateId: 1,
+        name: "OK"
+    },
+    {
+        stateId: 2,
+        name: "Wypożyczony"
+    }
+]
+
+type InfoPositionModalProps = {
+    closeModal: () => void,
+    selectedItemId: number,
+    open: boolean
 }
 
 type EditInputs = {
@@ -50,34 +69,96 @@ type EditInputs = {
     director: string,
     price: number,
     quantity: number,
-    group: number,
     info: string,
-    imgUrl: string
+    imageUrl: string
 }
 
-const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionModalProps) => {
-    const { register, handleSubmit, watch, errors } = useForm<EditInputs>();
-    const [genre, setGenre] = useState<number>(0);
-    const [state, setState] = useState<number>(0);
+const EditPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionModalProps) => {
+    const { register, handleSubmit, setValue, watch, errors } = useForm<EditInputs>();
+    const [movie, setMovie] = useState<IMovieResponseDto>();
+    const [genre, setGenre] = useState<number | undefined>(1);
+    const [state, setState] = useState<number | undefined>(1);
+
+    const fetchMovieData = () => {
+        InventoryAPI.get<IMovieResponseDto>(`/movies/${selectedItemId}`)
+            .then(response => {
+                const movieDto: IMovieResponseDto = response.data;
+                console.log(movieDto);
+                setMovie(movieDto);
+                setValue('name', movieDto.name);
+                setValue('director', movieDto.director);
+                setValue('price', movieDto.price);
+                setValue('quantity', movieDto.quantity);
+                setValue('info', movieDto.info);
+                setValue('imageUrl', movieDto.imgUrl);
+
+                setGenre(getGenreSelectValue(movieDto.genre));
+                setState(getStateSelectValue(movieDto.state));
+            })
+            .catch(error => {
+                alert(error.message)
+            })
+    }
+
+    function getGenreSelectValue(name: string): number | undefined {
+        console.log("getGenreSelectValue");
+        return MovieGenresSelect.find(genre => genre.name === name)?.genreId;
+    }
+
+    const getStateSelectValue = (stateName: string): number | undefined => {
+        console.log("getStateSelectValue");
+        return StateSelect.find(state => state.name === stateName)?.stateId;
+    }
 
     const onSubmit = (data: EditInputs) => {
-        console.log(selectedItemId);
-        console.log(data);
+        const movieToUpdate: IMovieSaveDto = {
+            id: selectedItemId,
+            name: data.name,
+            director: data.director,
+            price: data.price,
+            quantity: data.quantity,
+            state: state === undefined ? 1 : state,
+            info: data.director,
+            genre: genre === undefined ? 1 : genre,
+            imgUrl: data.imageUrl
+        }
+
+        InventoryAPI.put<IMovieSaveDto>("/movies", { ...movieToUpdate })
+            .then(response => {
+                if (response.status === 200) {
+                    closeModal();
+                }
+
+            })
+            .catch(error => {
+                alert(error.message)
+            })
     }
+
+    const handleGenreChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setGenre(event.target.value as number);
+    };
+
+    const handleStateChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setState(event.target.value as number)
+    };
 
     return (
         <Dialog
             open={open}
-            maxWidth={"lg"}
+            maxWidth={"sm"}
+            fullWidth
+            onEntered={() => fetchMovieData()}
             onClose={() => closeModal()}
         >
-            <DialogTitle>{`Edycja pozycji: ${mockItemDetails.name}`}</DialogTitle>
+            <DialogTitle>{`Edycja filmu: ${movie?.name}`}</DialogTitle>
             <DialogContent>
                 <Paper>
                     <Form>
                         <TextField
                             name="name"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             label="Nazwa"
@@ -88,6 +169,7 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                         <TextField
                             name="director"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             label="Reżyser"
@@ -98,23 +180,24 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                         <TextField
                             name="imageUrl"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
-                            id="firstName"
                             label="Obrazek"
                             autoFocus
                             inputRef={register}
                         />
                         <MarginDivider />
-                        <FormControl variant="outlined" fullWidth>
+                        <FormControl variant="outlined" size={"small"} fullWidth>
                             <Select
                                 name="genre"
                                 label="Gatunek"
-
+                                value={genre}
+                                onChange={handleGenreChange}
                             >
                                 {
                                     MovieGenresSelect.map(genre => {
-                                        <MenuItem value={genre.genreId}>{genre.name}</MenuItem>
+                                        return <MenuItem value={genre.genreId} key={genre.genreId}>{genre.name}</MenuItem>
                                     })
                                 }
                             </Select>
@@ -123,16 +206,19 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                         <TextField
                             name="price"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             type="number"
                             label="Cena"
                             autoFocus
+                            inputRef={register}
                         />
                         <MarginDivider />
                         <TextField
                             name="quantity"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             type="number"
@@ -141,20 +227,23 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                             inputRef={register}
                         />
                         <MarginDivider />
-                        <FormControl variant="outlined" fullWidth>
+                        <FormControl variant="outlined" size={"small"} fullWidth>
                             <Select
                                 label="Stan"
                                 name="state"
-
+                                value={state}
+                                onChange={handleStateChange}
                             >
-                                <MenuItem value={1}>Na stanie</MenuItem>
-                                <MenuItem value={2}>Wypożyczony</MenuItem>
+                                {StateSelect.map(state => {
+                                    return <MenuItem value={state.stateId} key={state.stateId}>{state.name}</MenuItem>
+                                })}
                             </Select>
                         </FormControl>
                         <MarginDivider />
                         <TextField
                             name="info"
                             variant="outlined"
+                            size={"small"}
                             required
                             fullWidth
                             type="string"
@@ -177,4 +266,4 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
     );
 }
 
-export default InfoPositionModal;
+export default EditPositionModal;

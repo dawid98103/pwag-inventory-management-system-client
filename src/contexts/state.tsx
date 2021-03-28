@@ -2,9 +2,14 @@ import React, { useContext, useReducer } from 'react';
 import { ILoginResponseDto } from '../api/dto';
 import { reducer, Action } from './reducer';
 
+export enum PageType {
+    MOVIES = 1,
+    USERS = 2,
+}
 export interface StateContext {
     isAuthenticated: boolean;
     currentUser: ILoginResponseDto | null;
+    currentPage: PageType
 }
 
 export interface Store {
@@ -12,7 +17,7 @@ export interface Store {
     dispatch?: React.Dispatch<Action>;
 }
 
-const defaultState: StateContext = { isAuthenticated: false, currentUser: null };
+const defaultState: StateContext = { isAuthenticated: false, currentUser: null, currentPage: PageType.MOVIES };
 const myContext = React.createContext<Store>({ state: defaultState });
 
 export const useStateContext = () => useContext(myContext);

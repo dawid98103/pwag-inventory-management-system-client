@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form";
 import styled from 'styled-components';
 import { useStateContext } from '../contexts/state';
 import { ActionType } from '../contexts/reducer';
-import { Link } from 'react-router-dom';
 import { ILoginRequestDto, ILoginResponseDto } from '../api/dto';
 import InventoryAPI from '../api/api';
 import { useHistory } from 'react-router-dom';
@@ -46,27 +45,23 @@ const LoginForm = () => {
     const history = useHistory();
     const { register, handleSubmit, watch, errors } = useForm<FormInputs>();
     const onSubmit = (data: FormInputs) => {
-        if (dispatch) {
-            dispatch({ type: ActionType.SIGN_IN, payload: { userId: 1, username: data.username, userRole: 22, token: "fdfd" } });
-            history.push("/inventory");
+        const dataToSend: ILoginRequestDto = {
+            username: data.username,
+            password: data.password
         }
 
-        /*         const dataToSend: ILoginRequestDto = {
-                    username: data.username,
-                    password: data.password
+        InventoryAPI.post('/authorization/login', dataToSend)
+            .then(response => {
+                const retrievedUser: ILoginResponseDto = response.data;
+                localStorage.setItem('user', JSON.stringify(retrievedUser));
+                localStorage.setItem('token', JSON.stringify(retrievedUser.token));
+                if (dispatch) {
+                    dispatch({ type: ActionType.SIGN_IN, payload: retrievedUser })
+                    history.push("/home");
                 }
-        
-                InventoryAPI.post('/authorization/login', dataToSend)
-                    .then(response => {
-                        const retrievedUser: ILoginResponseDto = response.data;
-                        localStorage.setItem('user', JSON.stringify(retrievedUser));
-                        localStorage.setItem('token', JSON.stringify(retrievedUser.token));
-                        if (dispatch) {
-                            dispatch({ type: ActionType.SIGN_IN, payload: retrievedUser })
-                        }
-                    }).catch(error => {
-                        console.log(error);
-                    }) */
+            }).catch(error => {
+                console.log(error);
+            })
     }
 
     return (
@@ -106,10 +101,6 @@ const LoginForm = () => {
                         helperText={errors.password !== undefined ? "Hasło powinno zawierać od 6 do 32 znaków" : ""}
                         error={errors.password !== undefined}
                         inputRef={register({ minLength: 6, maxLength: 32 })}
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Zapamiętaj mnie"
                     />
                     <SubmitButton
                         type="submit"

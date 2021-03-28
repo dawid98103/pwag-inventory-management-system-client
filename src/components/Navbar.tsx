@@ -3,19 +3,20 @@ import { Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
-import { useStateContext } from '../contexts/state';
-
-const CustomIconButton = styled(IconButton)`
-    margin-right: 16px;
-`
+import { PageType, useStateContext } from '../contexts/state';
+import { UserRoles } from '../api/dto';
+import { useHistory } from 'react-router-dom';
+import { ActionType } from '../contexts/reducer';
+import Divider from '@material-ui/core/Divider';
 
 const CustomTypohraphy = styled(Typography)`
-    flex-grow: 1
+    flex-grow: 1;
+    color: white;
 `
 
 const UserIconSection = styled.div`
@@ -25,27 +26,48 @@ const UserIconSection = styled.div`
 
 const Navbar = () => {
     const { state, dispatch } = useStateContext();
+    const history = useHistory();
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
         setOpenMenu(true);
     };
 
-    const handleCloseMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(null);
+    const handleLogout = (event: React.MouseEvent<HTMLElement>) => {
+        if (dispatch) {
+            dispatch({ type: ActionType.SIGN_OUT })
+            history.push("/");
+        }
         setOpenMenu(false);
     };
+
+    const switchToUserTable = () => {
+        if (dispatch) {
+            dispatch({ type: ActionType.CHANGE_PAGE, payload: PageType.USERS })
+        }
+    }
+
+    const switchToMovieTable = () => {
+        if (dispatch) {
+            dispatch({ type: ActionType.CHANGE_PAGE, payload: PageType.MOVIES })
+        }
+    }
 
     return (
         <AppBar position="static">
             <Toolbar>
-                <CustomIconButton edge="start" color="inherit" aria-label="menu">
-                    <MenuIcon />
-                </CustomIconButton>
+                {state.currentUser?.userRole === UserRoles.ADMIN &&
+                    <Button onClick={state.currentPage === PageType.MOVIES ? switchToUserTable : switchToMovieTable}>
+                        <CustomTypohraphy variant="h6">
+                            {state.currentPage === PageType.MOVIES ? "Użytkownicy" : "Filmy"}
+                        </CustomTypohraphy>
+                    </Button>
+                }
+                <Divider orientation="vertical" flexItem />
                 <CustomTypohraphy variant="h6">
-                    Movie inventory
+                    {state.currentPage === PageType.MOVIES ? "Inwentarz filmów" : "Wykaz użytkowników"}
                 </CustomTypohraphy>
                 {state.isAuthenticated && (
                     <UserIconSection>
@@ -53,11 +75,8 @@ const Navbar = () => {
                             {state.currentUser?.username}
                         </CustomTypohraphy>
                         <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
                             color="inherit"
-                            onClick={handleOpenMenu}
+                            onClick={handleOpenUserMenu}
                         >
                             <AccountCircle />
                         </IconButton>
@@ -76,8 +95,7 @@ const Navbar = () => {
                             open={openMenu}
                             onClose={setOpenMenu}
                         >
-                            <MenuItem onClick={handleCloseMenu}>Profil</MenuItem>
-                            <MenuItem onClick={handleCloseMenu}>Wyloguj</MenuItem>
+                            <MenuItem onClick={handleLogout}>Wyloguj</MenuItem>
                         </Menu>
                     </UserIconSection>
                 )}

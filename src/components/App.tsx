@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginPage from '../pages/LoginPage';
 import Navbar from '../components/Navbar';
-import InventoryPage from '../pages/InventoryPage';
+import ContentPage from '../pages/ContentPage';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { StateProvider } from '../contexts/state';
@@ -28,10 +28,10 @@ const App = () => {
         <React.Fragment>
             <StateProvider>
                 <ThemeProvider theme={theme}>
-                    <Navbar />
                     <BrowserRouter>
+                        <Navbar />
                         <Route path="/" exact component={LoginPage} />
-                        <Route path="/inventory" exact component={InventoryPage} />
+                        <Route path="/home" exact component={ContentPage} />
                     </BrowserRouter>
                 </ThemeProvider>
             </StateProvider>

@@ -1,10 +1,10 @@
-import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import InventoryAPI from '../../api/api';
 
 type DeletePositionModalProps = {
     closeModal: () => void,
@@ -15,8 +15,14 @@ type DeletePositionModalProps = {
 const DeletePositionModal = ({ closeModal, selectedItemId, open }: DeletePositionModalProps) => {
 
     const handleDeleteButtonClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        console.log(selectedItemId);
+        InventoryAPI.delete(`/movies/${selectedItemId}`)
+            .then(response => {
+                if (response.status === 200)
+                    closeModal();
+            })
+            .catch(error => {
+                alert(error.message)
+            })
     }
 
     return (

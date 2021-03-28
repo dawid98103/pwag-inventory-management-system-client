@@ -10,13 +10,14 @@ import { useForm } from 'react-hook-form';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Divider } from '@material-ui/core';
-import { IMovieResponseDto } from '../../api/dto';
+import { IMovieSaveDto } from '../../api/dto';
 import FormControl from '@material-ui/core/FormControl';
-import { MovieGenresSelect } from '../../api/dto';
-import { StateSelect } from '../../api/dto';
+import { MovieGenre, State } from '../../api/dto';
+import InventoryAPI from '../../api/api';
 
 type AddPositionModalProps = {
     closeModal: () => void,
+    refreshData: () => void,
     open: boolean
 }
 
@@ -27,23 +28,42 @@ const Paper = styled.div`
 `
 
 const Form = styled.form`
-    width: 700px;
+    min-width: 100%;
 `
 
 const MarginDivider = styled(Divider)`
-    margin: 8px 0px 8px 0px;
+    margin: 16px 0px 16px 0px;
 `
 
-const mockItemDetails: IMovieResponseDto = {
-    name: "Zielona mila",
-    director: "Frank Darabont",
-    price: 2.50,
-    quantity: 5,
-    state: "OK",
-    info: "bla bla bla",
-    genre: "Akcja",
-    imgUrl: "https://media.multikino.pl/thumbnails/50/rc/REEzODcy/eyJ0aHVtYm5haWwiOnsic2l6ZSI6WyIxMDAwMCIsIjEwMDAwIl0sIm1vZGUiOiJpbnNldCJ9fQ==/uploads/images/films_and_events/psykoty-poster_f59daab7c7.JPG"
-}
+const MovieGenresSelect: MovieGenre[] = [
+    {
+        genreId: 1,
+        name: "Akcja"
+    },
+    {
+        genreId: 2,
+        name: "Komedia"
+    },
+    {
+        genreId: 3,
+        name: "Dramat"
+    },
+    {
+        genreId: 4,
+        name: "Thriler"
+    }
+]
+
+const StateSelect: State[] = [
+    {
+        stateId: 1,
+        name: "OK"
+    },
+    {
+        stateId: 2,
+        name: "Wypożyczony"
+    }
+]
 
 type AddInputs = {
     name: string,
@@ -55,31 +75,52 @@ type AddInputs = {
     imgUrl: string
 }
 
-const AddPositionModal = ({ closeModal, open }: AddPositionModalProps) => {
+const AddPositionModal = ({ closeModal, refreshData, open }: AddPositionModalProps) => {
     const { register, handleSubmit, watch, errors } = useForm<AddInputs>();
-    const [genre, setGenre] = useState<number>(0);
-    const [state, setState] = useState<number>(0);
+    const [genre, setGenre] = useState<number>(1);
+    const [state, setState] = useState<number>(1);
 
     const onSubmit = (data: AddInputs) => {
-        console.log(data);
-        console.log(genre);
-        console.log(state);
+        const movieToSave: IMovieSaveDto = {
+            id: 0,
+            name: data.name,
+            director: data.director,
+            price: data.price,
+            quantity: data.quantity,
+            state: state,
+            info: data.director,
+            genre: genre,
+            imgUrl: data.imgUrl
+        }
+
+        console.log(movieToSave);
+
+        InventoryAPI.post<IMovieSaveDto>("/movies", { ...movieToSave })
+            .then(response => {
+                if (response.status === 200) {
+                    refreshData();
+                    closeModal();
+                }
+
+            })
+            .catch(error => {
+                alert(error.message)
+            })
     }
 
     const handleGenreChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        console.log(event);
         setGenre(event.target.value as number);
     };
 
     const handleStateChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        console.log(event);
         setState(event.target.value as number)
     };
 
     return (
         <Dialog
             open={open}
-            maxWidth={"lg"}
+            maxWidth={"sm"}
+            fullWidth
             onClose={() => closeModal()}
         >
             <DialogTitle>{`Dodanie nowego filmu`}</DialogTitle>
@@ -144,6 +185,8 @@ const AddPositionModal = ({ closeModal, open }: AddPositionModalProps) => {
                             type="number"
                             label="Cena"
                             autoFocus
+                            inputRef={register}
+
                         />
                         <MarginDivider />
                         <TextField

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,6 +11,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
+import InventoryAPI from '../../api/api';
 import { IMovieResponseDto } from '../../api/dto';
 
 type InfoPositionModalProps = {
@@ -19,65 +21,68 @@ type InfoPositionModalProps = {
 }
 
 const Image = styled.img`
-    max-width: 220px;
-    max-height: 300px
+    max-width: 320px;
+    max-height: 400px
 `
 
-const mockItemDetails: IMovieResponseDto = {
-    name: "Zielona mila",
-    director: "Frank Darabont",
-    price: 2.50,
-    quantity: 5,
-    state: "OK",
-    info: "bla bla bla",
-    genre: "Akcja",
-    imgUrl: "https://media.multikino.pl/thumbnails/50/rc/REEzODcy/eyJ0aHVtYm5haWwiOnsic2l6ZSI6WyIxMDAwMCIsIjEwMDAwIl0sIm1vZGUiOiJpbnNldCJ9fQ==/uploads/images/films_and_events/psykoty-poster_f59daab7c7.JPG"
-}
-
 const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionModalProps) => {
+    const [movie, setMovie] = useState<IMovieResponseDto | null>(null);
+
+    const fetchMovieData = () => {
+        InventoryAPI.get<IMovieResponseDto>(`/movies/${selectedItemId}`)
+            .then(response => {
+                setMovie(response.data);
+            })
+            .catch(error => {
+                alert(error.message);
+            })
+    }
 
     return (
         <Dialog
             open={open}
-            maxWidth={"sm"}
+            maxWidth={"md"}
+            fullWidth
+            onEntering={() => fetchMovieData()}
             onClose={() => closeModal()}
         >
-            <DialogTitle>{`Informacje o pozycji: ${mockItemDetails.name}`}</DialogTitle>
+            <DialogTitle>{`Informacje o pozycji: ${movie?.name}`}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    <Grid container spacing={1}>
+                    <Grid container spacing={4}>
                         <Grid item sm={12} md={4}>
-                            <Image src={mockItemDetails.imgUrl} />
+                            <Image src={movie?.imgUrl} />
                         </Grid>
                         <Grid item sm={12} md={8}>
                             <Paper>
                                 <List>
                                     <ListItem divider>
-                                        <ListItemText primary={`Nazwa: ${mockItemDetails.name}`} />
+                                        <ListItemText primary={`Nazwa: ${movie?.name}`} />
                                     </ListItem>
                                     <ListItem divider>
-                                        <ListItemText primary={`Reżyser: ${mockItemDetails.director}`} />
+                                        <ListItemText primary={`Reżyser: ${movie?.director}`} />
                                     </ListItem>
                                     <ListItem divider>
-                                        <ListItemText primary={`Gatunek: ${mockItemDetails.genre}`} />
+                                        <ListItemText primary={`Gatunek: ${movie?.genre}`} />
                                     </ListItem>
                                     <ListItem divider>
-                                        <ListItemText primary={`Cena: ${mockItemDetails.price}`} />
+                                        <ListItemText primary={`Ostatnia aktualizacja: ${movie?.lastUpdated}`} />
                                     </ListItem>
                                     <ListItem divider>
-                                        <ListItemText primary={`Ilość: ${mockItemDetails.quantity}`} />
+                                        <ListItemText primary={`Cena: ${movie?.price}`} />
                                     </ListItem>
                                     <ListItem divider>
-                                        <ListItemText primary={`Stan: ${mockItemDetails.state}`} />
+                                        <ListItemText primary={`Ilość: ${movie?.quantity}`} />
+                                    </ListItem>
+                                    <ListItem divider>
+                                        <ListItemText primary={`Stan: ${movie?.state}`} />
                                     </ListItem>
                                     <ListItem divider>
                                         <ListItemText primary="Informacje" />
                                     </ListItem>
                                     <Paper>
                                         <p>
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                            when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                            {movie?.info}
                                         </p>
                                     </Paper>
                                 </List>

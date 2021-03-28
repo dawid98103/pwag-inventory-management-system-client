@@ -1,4 +1,4 @@
-enum UserRoles {
+export enum UserRoles {
     USER = 1,
     ADMIN = 2
 }
@@ -10,6 +10,11 @@ export interface MovieGenre {
 
 export interface State {
     stateId: number,
+    name: string
+}
+
+export interface Role {
+    roleId: number,
     name: string
 }
 
@@ -25,7 +30,15 @@ export interface ILoginResponseDto {
     token: string
 }
 
+export interface IUsersResponseDto {
+    id: number,
+    username: string,
+    role: string,
+    lastUpdated: string
+}
+
 export interface IMovieResponseDto {
+    id: number,
     name: string,
     director: string,
     price: number,
@@ -33,38 +46,25 @@ export interface IMovieResponseDto {
     state: string,
     info: string,
     genre: string,
+    imgUrl: string,
+    lastUpdated: string
+}
+
+export interface IMovieSaveDto {
+    id: number,
+    name: string,
+    director: string,
+    price: number,
+    quantity: number,
+    state: number,
+    info: string,
+    genre: number,
     imgUrl: string
 }
 
-export const MovieGenresSelect: MovieGenre[] = [
-    {
-        genreId: 1,
-        name: "Akcja"
-    },
-    {
-        genreId: 2,
-        name: "Komedia"
-    },
-    {
-        genreId: 3,
-        name: "Dramat"
-    },
-    {
-        genreId: 4,
-        name: "Thriler"
-    }
-]
-
-export const StateSelect: State[] = [
-    {
-        stateId: 1,
-        name: "Akcja"
-    },
-    {
-        stateId: 2,
-        name: "Komedia"
-    }
-]
-
-
-
+export interface IUserSaveDto {
+    id: number;
+    username: string;
+    password: string;
+    roleId: number;
+}

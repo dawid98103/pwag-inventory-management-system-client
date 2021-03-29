@@ -13,6 +13,7 @@ import { Divider } from '@material-ui/core';
 import { IMovieSaveDto, IUserSaveDto } from '../../api/dto';
 import FormControl from '@material-ui/core/FormControl';
 import { Role } from '../../api/dto';
+import InputLabel from '@material-ui/core/InputLabel';
 import InventoryAPI from '../../api/api';
 
 type AddPositionModalProps = {
@@ -57,13 +58,12 @@ const AddPositionModal = ({ closeModal, refreshData, open }: AddPositionModalPro
 
     const onSubmit = (data: AddInputs) => {
         const movieToSave: IUserSaveDto = {
-            id: 0,
             username: data.username,
             password: data.password,
             roleId: role
         }
 
-        InventoryAPI.post<IMovieSaveDto>("/users", { ...movieToSave })
+        InventoryAPI.post<IMovieSaveDto>("/authorization/signup", { ...movieToSave })
             .then(response => {
                 if (response.status === 200) {
                     refreshData();
@@ -115,6 +115,7 @@ const AddPositionModal = ({ closeModal, refreshData, open }: AddPositionModalPro
                         />
                         <MarginDivider />
                         <FormControl variant="outlined" size={"small"} fullWidth>
+                            <InputLabel>Rola</InputLabel>
                             <Select
                                 name="role"
                                 label="Rola"

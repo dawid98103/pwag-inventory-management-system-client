@@ -25,9 +25,9 @@ export interface ILoginRequestDto {
 
 export interface ILoginResponseDto {
     userId: number,
-    userRole: number,
+    roleId: number,
     username: string,
-    token: string
+    accessToken: string
 }
 
 export interface IUsersResponseDto {
@@ -63,7 +63,6 @@ export interface IMovieSaveDto {
 }
 
 export interface IUserSaveDto {
-    id: number;
     username: string;
     password: string;
     roleId: number;

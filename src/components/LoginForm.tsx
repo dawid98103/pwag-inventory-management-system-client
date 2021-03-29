@@ -50,11 +50,11 @@ const LoginForm = () => {
             password: data.password
         }
 
-        InventoryAPI.post('/authorization/login', dataToSend)
+        InventoryAPI.post('/authorization/signin', dataToSend)
             .then(response => {
                 const retrievedUser: ILoginResponseDto = response.data;
                 localStorage.setItem('user', JSON.stringify(retrievedUser));
-                localStorage.setItem('token', JSON.stringify(retrievedUser.token));
+                localStorage.setItem('token', JSON.stringify(retrievedUser.accessToken));
                 if (dispatch) {
                     dispatch({ type: ActionType.SIGN_IN, payload: retrievedUser })
                     history.push("/home");

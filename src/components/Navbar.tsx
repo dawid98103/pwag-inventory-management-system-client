@@ -24,6 +24,10 @@ const UserIconSection = styled.div`
     align-items: center
 `
 
+const MarginDivider = styled(Divider)`
+    margin: 0px 10px 0px 10px;
+`
+
 const Navbar = () => {
     const { state, dispatch } = useStateContext();
     const history = useHistory();
@@ -58,14 +62,14 @@ const Navbar = () => {
     return (
         <AppBar position="static">
             <Toolbar>
-                {state.currentUser?.userRole === UserRoles.ADMIN &&
+                {state.currentUser?.roleId === UserRoles.ADMIN &&
                     <Button onClick={state.currentPage === PageType.MOVIES ? switchToUserTable : switchToMovieTable}>
-                        <CustomTypohraphy variant="h6">
+                        <CustomTypohraphy>
                             {state.currentPage === PageType.MOVIES ? "Użytkownicy" : "Filmy"}
                         </CustomTypohraphy>
                     </Button>
                 }
-                <Divider orientation="vertical" flexItem />
+                <MarginDivider orientation="vertical" flexItem />
                 <CustomTypohraphy variant="h6">
                     {state.currentPage === PageType.MOVIES ? "Inwentarz filmów" : "Wykaz użytkowników"}
                 </CustomTypohraphy>

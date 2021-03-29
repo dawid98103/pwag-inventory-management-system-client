@@ -17,7 +17,9 @@ export interface Store {
     dispatch?: React.Dispatch<Action>;
 }
 
-const defaultState: StateContext = { isAuthenticated: false, currentUser: null, currentPage: PageType.MOVIES };
+const user: ILoginResponseDto = JSON.parse(localStorage.getItem('user') || 'null');
+
+const defaultState: StateContext = { isAuthenticated: user ? true : false, currentUser: user, currentPage: PageType.MOVIES };
 const myContext = React.createContext<Store>({ state: defaultState });
 
 export const useStateContext = () => useContext(myContext);

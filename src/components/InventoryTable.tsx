@@ -64,7 +64,7 @@ const InventoryTable = ({ rows, refreshData }: InventoryTableProps) => {
         { field: 'genre', headerName: 'Gatunek', type: 'string', flex: 1, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Gatunek</b> } },
         { field: 'lastUpdated', headerName: 'Ostatnia aktualizacja', type: 'date', flex: 2, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Ostatnia aktualizacja</b> } },
         {
-            field: '', headerName: 'Operacje', sortable: false, disableClickEventBubbling: true, flex: 1, hide: state.currentUser?.userRole === UserRoles.USER, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Operacje</b> }, renderCell: (params: GridCellParams) => {
+            field: '', headerName: 'Operacje', sortable: false, disableClickEventBubbling: true, flex: 1, hide: state.currentUser?.roleId === UserRoles.USER, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Operacje</b> }, renderCell: (params: GridCellParams) => {
                 return (
                     <ButtonsContainer>
                         <IconButton color="primary" aria-label="edit icon" onClick={() => handleInfoPositionModal(params.getValue('id'))}><InfoIcon /></IconButton>

@@ -1,6 +1,7 @@
 import { PageType, useStateContext } from '../contexts/state';
 import MoviePage from './MoviePage';
 import UsersPage from './UsersPage';
+import Navbar from '../components/Navbar';
 
 const ContentPage = (): JSX.Element => {
     const { state, dispatch } = useStateContext();
@@ -16,6 +17,7 @@ const ContentPage = (): JSX.Element => {
 
     return (
         <>
+            <Navbar />
             {renderPage()}
         </>
     )

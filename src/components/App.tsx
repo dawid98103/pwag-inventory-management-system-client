@@ -1,6 +1,5 @@
 import React from 'react';
 import LoginPage from '../pages/LoginPage';
-import Navbar from '../components/Navbar';
 import ContentPage from '../pages/ContentPage';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -29,7 +28,6 @@ const App = () => {
             <StateProvider>
                 <ThemeProvider theme={theme}>
                     <BrowserRouter>
-                        <Navbar />
                         <Route path="/" exact component={LoginPage} />
                         <Route path="/home" exact component={ContentPage} />
                     </BrowserRouter>

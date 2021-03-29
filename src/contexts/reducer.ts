@@ -13,8 +13,8 @@ export type Action = { type: ActionType.SIGN_IN, payload: ILoginResponseDto } | 
 export const reducer = (state: StateContext, action: Action) => {
     switch (action.type) {
         case ActionType.SIGN_IN:
-            InventoryAPI.defaults.headers.common['Authorization'] = action.payload.token;
-            localStorage.setItem('token', JSON.stringify(action.payload.token));
+            InventoryAPI.defaults.headers.common['Authorization'] = action.payload.accessToken;
+            localStorage.setItem('token', JSON.stringify(action.payload.accessToken));
             return { ...state, isAuthenticated: true, currentUser: action.payload };
         case ActionType.SIGN_OUT:
             localStorage.removeItem('token');

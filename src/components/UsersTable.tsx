@@ -15,9 +15,9 @@ type InventoryTableProps = {
 const InventoryTable = ({ rows, refreshData }: InventoryTableProps) => {
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', flex: 1, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>ID</b> } },
-        { field: 'username', headerName: 'Nazwa', flex: 1, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Nazwa użytkownika</b> } },
-        { field: 'role', headerName: 'Rola', flex: 1, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Rola</b> } },
-        { field: 'lastUpdated', headerName: 'Ostatnia aktualizacja', type: 'date', flex: 1, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Ostatnia aktualizacja</b> } }
+        { field: 'username', headerName: 'Nazwa', flex: 2, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Nazwa użytkownika</b> } },
+        { field: 'role', headerName: 'Rola', flex: 2, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Rola</b> } },
+        { field: 'lastUpdated', headerName: 'Ostatnia aktualizacja', type: 'date', flex: 2, align: 'center', headerAlign: 'center', renderHeader: (params: GridColParams) => { return <b>Ostatnia aktualizacja</b> } }
     ];
 
     return (

@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Divider } from '@material-ui/core';
 import { IMovieSaveDto } from '../../api/dto';
 import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import { MovieGenre, State } from '../../api/dto';
 import InventoryAPI from '../../api/api';
 
@@ -46,11 +47,11 @@ const MovieGenresSelect: MovieGenre[] = [
     },
     {
         genreId: 3,
-        name: "Dramat"
+        name: "Thriller"
     },
     {
         genreId: 4,
-        name: "Thriler"
+        name: "Dramat"
     }
 ]
 
@@ -72,7 +73,7 @@ type AddInputs = {
     quantity: number,
     group: number,
     info: string,
-    imgUrl: string
+    imageUrl: string
 }
 
 const AddPositionModal = ({ closeModal, refreshData, open }: AddPositionModalProps) => {
@@ -90,7 +91,7 @@ const AddPositionModal = ({ closeModal, refreshData, open }: AddPositionModalPro
             state: state,
             info: data.director,
             genre: genre,
-            imgUrl: data.imgUrl
+            imgUrl: data.imageUrl
         }
 
         console.log(movieToSave);
@@ -155,13 +156,13 @@ const AddPositionModal = ({ closeModal, refreshData, open }: AddPositionModalPro
                             size={"small"}
                             required
                             fullWidth
-                            id="firstName"
                             label="Obrazek"
                             autoFocus
                             inputRef={register}
                         />
                         <MarginDivider />
                         <FormControl variant="outlined" size={"small"} fullWidth>
+                            <InputLabel>Gatunek</InputLabel>
                             <Select
                                 name="genre"
                                 label="Gatunek"
@@ -202,6 +203,7 @@ const AddPositionModal = ({ closeModal, refreshData, open }: AddPositionModalPro
                         />
                         <MarginDivider />
                         <FormControl variant="outlined" size={"small"} fullWidth>
+                            <InputLabel>Stan</InputLabel>
                             <Select
                                 label="Stan"
                                 name="state"

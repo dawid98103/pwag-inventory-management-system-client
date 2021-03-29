@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Divider } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import InventoryAPI from '../../api/api';
+import InputLabel from '@material-ui/core/InputLabel';
 import { IMovieResponseDto, IMovieSaveDto, MovieGenre, State } from '../../api/dto';
 
 const Paper = styled.div`
@@ -39,11 +40,11 @@ const MovieGenresSelect: MovieGenre[] = [
     },
     {
         genreId: 3,
-        name: "Dramat"
+        name: "Thriller"
     },
     {
         genreId: 4,
-        name: "Thriler"
+        name: "Dramat"
     }
 ]
 
@@ -159,6 +160,7 @@ const EditPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                             name="name"
                             variant="outlined"
                             size={"small"}
+                            focused
                             required
                             fullWidth
                             label="Nazwa"
@@ -170,6 +172,7 @@ const EditPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                             name="director"
                             variant="outlined"
                             size={"small"}
+                            focused
                             required
                             fullWidth
                             label="Reżyser"
@@ -181,6 +184,7 @@ const EditPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                             name="imageUrl"
                             variant="outlined"
                             size={"small"}
+                            focused
                             required
                             fullWidth
                             label="Obrazek"
@@ -189,6 +193,7 @@ const EditPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                         />
                         <MarginDivider />
                         <FormControl variant="outlined" size={"small"} fullWidth>
+                            <InputLabel>Gatunek</InputLabel>
                             <Select
                                 name="genre"
                                 label="Gatunek"
@@ -207,6 +212,7 @@ const EditPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                             name="price"
                             variant="outlined"
                             size={"small"}
+                            focused
                             required
                             fullWidth
                             type="number"
@@ -219,6 +225,7 @@ const EditPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                             name="quantity"
                             variant="outlined"
                             size={"small"}
+                            focused
                             required
                             fullWidth
                             type="number"
@@ -228,6 +235,7 @@ const EditPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                         />
                         <MarginDivider />
                         <FormControl variant="outlined" size={"small"} fullWidth>
+                            <InputLabel>Stan</InputLabel>
                             <Select
                                 label="Stan"
                                 name="state"
@@ -244,6 +252,7 @@ const EditPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
                             name="info"
                             variant="outlined"
                             size={"small"}
+                            focused
                             required
                             fullWidth
                             type="string"

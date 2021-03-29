@@ -46,7 +46,7 @@ const MoviePage = (): JSX.Element => {
         <>
             <AddPositionModal open={openAddModal} closeModal={() => setOpenAddModal(false)} refreshData={() => setRefreshData(!refreshData)} />
             <InventoryPageActionBar>
-                {state.currentUser?.userRole === UserRoles.ADMIN &&
+                {state.currentUser?.roleId === UserRoles.ADMIN &&
                     <Button variant="contained" color="primary" onClick={() => handleAddPositionModal()}>
                         + Dodaj pozycję
                     </Button>

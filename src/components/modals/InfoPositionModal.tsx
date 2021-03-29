@@ -31,6 +31,7 @@ const InfoPositionModal = ({ closeModal, selectedItemId, open }: InfoPositionMod
     const fetchMovieData = () => {
         InventoryAPI.get<IMovieResponseDto>(`/movies/${selectedItemId}`)
             .then(response => {
+                console.log(response.data);
                 setMovie(response.data);
             })
             .catch(error => {

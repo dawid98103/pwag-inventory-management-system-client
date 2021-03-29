@@ -62,13 +62,11 @@ const Navbar = () => {
     return (
         <AppBar position="static">
             <Toolbar>
-                {state.currentUser?.roleId === UserRoles.ADMIN &&
-                    <Button onClick={state.currentPage === PageType.MOVIES ? switchToUserTable : switchToMovieTable}>
-                        <CustomTypohraphy>
-                            {state.currentPage === PageType.MOVIES ? "Użytkownicy" : "Filmy"}
-                        </CustomTypohraphy>
-                    </Button>
-                }
+                <Button onClick={state.currentPage === PageType.MOVIES ? switchToUserTable : switchToMovieTable}>
+                    <CustomTypohraphy>
+                        {state.currentPage === PageType.MOVIES ? "Użytkownicy" : "Filmy"}
+                    </CustomTypohraphy>
+                </Button>
                 <MarginDivider orientation="vertical" flexItem />
                 <CustomTypohraphy variant="h6">
                     {state.currentPage === PageType.MOVIES ? "Inwentarz filmów" : "Wykaz użytkowników"}
